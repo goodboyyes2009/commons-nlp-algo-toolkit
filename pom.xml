@@ -58,11 +58,20 @@
         <!-- FudanNLP 依赖包 -->
 
         <!-- jieba 依赖包 -->
+        <!--<dependency>-->
+            <!--<groupId>com.huaban</groupId>-->
+            <!--<artifactId>jieba-analysis</artifactId>-->
+            <!--<version>1.0.2</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>com.huaban</groupId>
             <artifactId>jieba-analysis</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jieba-analysis-1.0.3-SNAPSHOT.jar</systemPath>
         </dependency>
+
         <!-- jieba 依赖包 -->
 
         <dependency>

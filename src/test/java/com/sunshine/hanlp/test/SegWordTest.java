@@ -1,14 +1,10 @@
 package com.sunshine.hanlp.test;
 
-import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.seg.Other.AhoCorasickDoubleArrayTrieSegment;
-import com.hankcs.hanlp.seg.Other.DoubleArrayTrieSegment;
-import com.hankcs.hanlp.seg.Segment;
-import com.hankcs.hanlp.seg.common.Term;
+import com.sunshine.seg.HanLPSegmenter;
+import com.sunshine.seg.SegWordFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,40 +14,33 @@ import java.util.List;
 public class SegWordTest {
 
     String text = "江西鄱阳湖干枯，中国最大淡水湖变成大草原";
-
-    Segment segment;
+    HanLPSegmenter segmenter;
+    String dictPath = "/home/hj/data/nlp/icwb2-data/gold/pku_training_words.utf8";
 
     @Before
-    public void init(){
-        HanLP.Config.ShowTermNature = false;
+    public void init() {
+        segmenter = (HanLPSegmenter) SegWordFactory.createSegmenter(HanLPSegmenter.class);
     }
 
 
     @Test
-    public void testSeg(){
-        HanLP.Config.enableDebug();
-        List<Term> terms = HanLP.segment("我是中国人");
-        terms.stream().forEach(System.out::println);
+    public void testSeg() {
+        List<String> strings = segmenter.segWord(text);
+        strings.stream().forEach(System.out::println);
     }
 
     @Test
-    public void testDAT(){
-        segment = new DoubleArrayTrieSegment();
-        List<Term> terms = segment.seg(text);
-        terms.forEach(t -> System.out.println(t.word));
+    public void testDAT() {
+        segmenter.loadCustomDict(dictPath);
+        List<String> segWords = segmenter.segWord(text);
+        segWords.stream().forEach(System.out::println);
     }
 
     @Test
-    public void testACDAT() throws IOException {
-        setSomeConf();
-        segment = new AhoCorasickDoubleArrayTrieSegment();
-        List<Term> terms = segment.seg(text);
-        terms.forEach(t -> System.out.println(t.word));
-    }
-
-    private void setSomeConf(){
-        if (segment != null){
-            segment.enablePartOfSpeechTagging(true);
-        }
+    public void testACDAT() {
+        segmenter.dat = false;
+        segmenter.initSegmenter();
+        List<String> strings = segmenter.segWord(text);
+        strings.stream().forEach(System.out::println);
     }
 }
